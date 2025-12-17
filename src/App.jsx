@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-// Custom Hook for fetching tasks
+let appRenderCount = 0;
+
+// Custom Hook
 const useFetchTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,14 +12,13 @@ const useFetchTasks = () => {
     const fetchTasks = async () => {
       try {
         setLoading(true);
-        // Using JSONPlaceholder API for demo
+        // JSONPlaceholder API
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/todos?_limit=5"
         );
         if (!response.ok) throw new Error("Failed to fetch tasks");
         const data = await response.json();
 
-        // Transform API data to our task structure
         const transformedTasks = data.map((item) => ({
           id: item.id,
           title: item.title,
@@ -45,10 +46,9 @@ export default function App() {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
   const [newTask, setNewTask] = useState("");
-  const renderCount = useRef(0);
 
-  // Increment render count (refs don't cause re-renders)
-  renderCount.current += 1;
+  // Increment render count (module variable)
+  appRenderCount += 1;
 
   const addTask = () => {
     if (newTask.trim()) {
@@ -179,7 +179,7 @@ export default function App() {
         )}
       </main>
 
-      <Footer renderCountRef={renderCount} />
+      <Footer renderCount={appRenderCount} />
 
       <style>{`
         * {
@@ -414,7 +414,7 @@ function Header() {
   );
 }
 
-function Footer({ renderCountRef }) {
+function Footer({ renderCount }) {
   return (
     <footer
       style={{
@@ -428,7 +428,7 @@ function Footer({ renderCountRef }) {
       }}
     >
       <p>
-        Page Renders: <strong>{renderCountRef.current}</strong>
+        Page Renders: <strong>{renderCount}</strong>
       </p>
     </footer>
   );
