@@ -5,7 +5,7 @@ interface FooterProps {
   renderCount: number;
 }
 
-export default function Footer({ renderCount }: FooterProps): JSX.Element {
+function Footer({ renderCount }: FooterProps): JSX.Element {
   return (
     <footer className="footer">
       <p>
@@ -14,3 +14,5 @@ export default function Footer({ renderCount }: FooterProps): JSX.Element {
     </footer>
   );
 }
+
+export default Footer;

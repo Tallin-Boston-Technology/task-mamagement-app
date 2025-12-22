@@ -14,7 +14,7 @@ interface TaskItemProps {
   onDeleteTask: (id: number) => void;
 }
 
-export default function TaskItem({
+function TaskItem({
   task,
   isEditing,
   editText,
@@ -69,3 +69,5 @@ export default function TaskItem({
     </div>
   );
 }
+
+export default TaskItem;

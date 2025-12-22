@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Task, UseFetchTasksReturn } from "../types/Task";
 
-export default function useFetchTasks(): UseFetchTasksReturn {
+function useFetchTasks(): UseFetchTasksReturn {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,3 +36,5 @@ export default function useFetchTasks(): UseFetchTasksReturn {
 
   return { tasks, setTasks, loading, error };
 }
+
+export default useFetchTasks;

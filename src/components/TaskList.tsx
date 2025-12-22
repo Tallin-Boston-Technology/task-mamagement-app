@@ -15,7 +15,7 @@ interface TaskListProps {
   onDeleteTask: (id: number) => void;
 }
 
-export default function TaskList({
+function TaskList({
   tasks,
   editingId,
   editText,
@@ -49,3 +49,5 @@ export default function TaskList({
     </div>
   );
 }
+
+export default TaskList;

@@ -5,7 +5,7 @@ interface TaskInputProps {
   onAddTask: (taskTitle: string) => void;
 }
 
-export default function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
+function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
   const [newTask, setNewTask] = useState<string>("");
 
   const handleAdd = (): void => {
@@ -27,7 +27,7 @@ export default function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
         type="text"
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
         placeholder="Add a new task..."
         className="task-input"
       />
@@ -37,3 +37,5 @@ export default function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
     </div>
   );
 }
+
+export default TaskInput;

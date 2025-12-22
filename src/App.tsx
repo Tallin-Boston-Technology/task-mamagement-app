@@ -1,38 +1,40 @@
-import { JSX, useState } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import TaskInput from './components/TaskInput';
-import TaskList from './components/TaskList';
-import type { Task } from './types/Task';
-import useFetchTasks from './hooks/useFetchTask';
-import './styles/App.css';
+import { JSX, useState } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import TaskInput from "./components/TaskInput";
+import TaskList from "./components/TaskList";
+import type { Task } from "./types/Task";
+import useFetchTasks from "./hooks/useFetchTask";
+import "./styles/App.css";
 
 let appRenderCount: number = 0;
 
 export default function App(): JSX.Element {
   const { tasks, setTasks, loading, error } = useFetchTasks();
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editText, setEditText] = useState<string>('');
-  
+  const [editText, setEditText] = useState<string>("");
+
   appRenderCount += 1;
 
   const addTask = (taskTitle: string): void => {
     const task: Task = {
       id: Date.now(),
       title: taskTitle,
-      completed: false
+      completed: false,
     };
     setTasks([...tasks, task]);
   };
 
   const deleteTask = (id: number): void => {
-    setTasks(tasks.filter(task => task.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   const toggleComplete = (id: number): void => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   const startEdit = (task: Task): void => {
@@ -42,23 +44,25 @@ export default function App(): JSX.Element {
 
   const saveEdit = (): void => {
     if (editText.trim()) {
-      setTasks(tasks.map(task => 
-        task.id === editingId ? { ...task, title: editText } : task
-      ));
+      setTasks(
+        tasks.map((task) =>
+          task.id === editingId ? { ...task, title: editText } : task
+        )
+      );
       setEditingId(null);
-      setEditText('');
+      setEditText("");
     }
   };
 
   const cancelEdit = (): void => {
     setEditingId(null);
-    setEditText('');
+    setEditText("");
   };
 
   return (
     <div className="app-container">
       <Header />
-      
+
       <main className="main-content">
         <TaskInput onAddTask={addTask} />
 
