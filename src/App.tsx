@@ -7,7 +7,6 @@ import type { Task } from './types/Task';
 import useFetchTasks from './hooks/useFetchTask';
 import './styles/App.css';
 
-// Module-level render counter
 let appRenderCount: number = 0;
 
 export default function App(): JSX.Element {
@@ -15,7 +14,6 @@ export default function App(): JSX.Element {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>('');
   
-  // Increment render count
   appRenderCount += 1;
 
   const addTask = (taskTitle: string): void => {
