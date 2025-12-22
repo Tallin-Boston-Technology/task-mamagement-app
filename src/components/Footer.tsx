@@ -1,6 +1,11 @@
+import { JSX } from "react";
 import "../styles/Footer.css";
 
-export default function Footer({ renderCount }) {
+interface FooterProps {
+  renderCount: number;
+}
+
+export default function Footer({ renderCount }: FooterProps): JSX.Element {
   return (
     <footer className="footer">
       <p>

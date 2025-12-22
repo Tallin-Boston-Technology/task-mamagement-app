@@ -40,28 +40,6 @@
   gap: 0.5rem;
 }
 
-/* Edit Mode */
-.edit-section {
-  flex: 1;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.edit-input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 2px solid #667eea;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.edit-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* Buttons */
 .btn-edit {
   background: #3b82f6;
   color: white;
@@ -82,6 +60,26 @@
 
 .btn-delete:hover {
   background: #dc2626;
+}
+
+.edit-section {
+  flex: 1;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 2px solid #667eea;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.edit-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .btn-save {
