@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Task, UseFetchTasksReturn } from "../types/Task";
+import taskService from "../api/taskService";
 
 function useFetchTasks(): UseFetchTasksReturn {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -10,22 +11,14 @@ function useFetchTasks(): UseFetchTasksReturn {
     const fetchTasks = async (): Promise<void> => {
       try {
         setLoading(true);
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/todos?_limit=5"
-        );
-        if (!response.ok) throw new Error("Failed to fetch tasks");
-        const data = await response.json();
-
-        const transformedTasks: Task[] = data.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          completed: item.completed,
-        }));
-
-        setTasks(transformedTasks);
         setError(null);
+
+        const fetchedTasks = await taskService.getTasks(5);
+        setTasks(fetchedTasks);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        const errMessage =
+          err instanceof Error ? err.message : "An error occurred";
+        setError(errMessage);
       } finally {
         setLoading(false);
       }

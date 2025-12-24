@@ -1,6 +1,6 @@
 import type { Task } from "../types/Task";
 import "../styles/TaskItem.css";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 
 interface TaskItemProps {
   task: Task;
@@ -25,6 +25,16 @@ function TaskItem({
   onCancelEdit,
   onDeleteTask,
 }: TaskItemProps): JSX.Element {
+  const [deleting, setDeleting] = useState(false);
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      await onDeleteTask(task.id);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className={`task-item ${task.completed ? "completed" : ""}`}>
       <input
@@ -32,6 +42,7 @@ function TaskItem({
         checked={task.completed}
         onChange={() => onToggleComplete(task.id)}
         className="task-checkbox"
+        disabled={deleting}
       />
 
       {isEditing ? (
@@ -54,14 +65,19 @@ function TaskItem({
         <>
           <span className="task-title">{task.title}</span>
           <div className="task-actions">
-            <button onClick={() => onStartEdit(task)} className="btn btn-edit">
+            <button
+              onClick={() => onStartEdit(task)}
+              className="btn btn-edit"
+              disabled={deleting}
+            >
               Edit
             </button>
             <button
-              onClick={() => onDeleteTask(task.id)}
+              onClick={handleDelete}
               className="btn btn-delete"
+              disabled={deleting}
             >
-              Delete
+              {deleting ? "Deleting..." : "Delete"}
             </button>
           </div>
         </>

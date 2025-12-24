@@ -4,37 +4,67 @@ import Footer from "./components/Footer";
 import TaskInput from "./components/TaskInput";
 import TaskList from "./components/TaskList";
 import type { Task } from "./types/Task";
-import useFetchTasks from "./hooks/useFetchTask";
+import useFetchTasks from "./hooks/useFetchTasks";
 import "./styles/App.css";
 
 let appRenderCount: number = 0;
 
-export default function App(): JSX.Element {
+function App(): JSX.Element {
   const { tasks, setTasks, loading, error } = useFetchTasks();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
 
   appRenderCount += 1;
 
-  const addTask = (taskTitle: string): void => {
-    const task: Task = {
-      id: Date.now(),
-      title: taskTitle,
-      completed: false,
-    };
-    setTasks([...tasks, task]);
+  const addTask = async (taskTitle: string): Promise<void> => {
+    try {
+      const task: Task = {
+        id: Date.now(),
+        title: taskTitle,
+        completed: false,
+      };
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("Task added locally (API Simulation)");
+
+      setTasks([...tasks, task]);
+    } catch (err) {
+      console.error("Failed to add task:", err);
+      alert("Failed to add task. Please try again");
+    }
   };
 
-  const deleteTask = (id: number): void => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask = async (id: number): Promise<void> => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      console.log(`Task ${id} deleted (API Simulation)`);
+
+      setTasks(tasks.filter((task) => task.id !== id));
+    } catch (err) {
+      console.error("Failed to delete task:", err);
+      alert("Failed to delete task. please try again");
+    }
   };
 
-  const toggleComplete = (id: number): void => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const toggleComplete = async (id: number): Promise<void> => {
+    try {
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, completed: !task.completed } : task
+        )
+      );
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      console.log(`Task ${id} toggled (API Simulation)`);
+    } catch (err) {
+      console.error("Failed to toggle task:", err);
+
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, completed: !task.completed } : task
+        )
+      );
+      alert("Failed to update task. Please try again");
+    }
   };
 
   const startEdit = (task: Task): void => {
@@ -42,15 +72,22 @@ export default function App(): JSX.Element {
     setEditText(task.title);
   };
 
-  const saveEdit = (): void => {
+  const saveEdit = async (): Promise<void> => {
     if (editText.trim()) {
-      setTasks(
-        tasks.map((task) =>
-          task.id === editingId ? { ...task, title: editText } : task
-        )
-      );
-      setEditingId(null);
-      setEditText("");
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        console.log(`task ${editingId} updated (API Simulation)`);
+        setTasks(
+          tasks.map((task) =>
+            task.id === editingId ? { ...task, title: editText } : task
+          )
+        );
+        setEditingId(null);
+        setEditText("");
+      } catch (err) {
+        console.error("Failed to update task:", err);
+        alert("Failed to update task. Please try again");
+      }
     }
   };
 
@@ -67,7 +104,16 @@ export default function App(): JSX.Element {
         <TaskInput onAddTask={addTask} />
 
         {loading && <div className="loading">Loading tasks...</div>}
-        {error && <div className="error">Error: {error}</div>}
+        {error && (
+          <div className="error">
+            Error: {error}
+            <button
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        )}
 
         {!loading && !error && (
           <TaskList
@@ -88,3 +134,5 @@ export default function App(): JSX.Element {
     </div>
   );
 }
+
+export default App;

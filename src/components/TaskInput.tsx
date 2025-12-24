@@ -7,16 +7,22 @@ interface TaskInputProps {
 
 function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
   const [newTask, setNewTask] = useState<string>("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const handleAdd = (): void => {
-    if (newTask.trim()) {
-      onAddTask(newTask);
-      setNewTask("");
+  const handleAdd = async (): Promise<void> => {
+    if (newTask.trim() && !submitting) {
+      setSubmitting(true);
+      try {
+        await onAddTask(newTask);
+        setNewTask("");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !submitting) {
       handleAdd();
     }
   };
@@ -30,9 +36,14 @@ function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
         onKeyDown={handleKeyPress}
         placeholder="Add a new task..."
         className="task-input"
+        disabled={submitting}
       />
-      <button onClick={handleAdd} className="btn btn-add">
-        Add Task
+      <button
+        onClick={handleAdd}
+        className="btn btn-add"
+        disabled={submitting || !newTask.trim()}
+      >
+        {submitting ? "Adding..." : "Add Task"}
       </button>
     </div>
   );
