@@ -107,11 +107,7 @@ function App(): JSX.Element {
         {error && (
           <div className="error">
             Error: {error}
-            <button
-              onClick={() => window.location.reload()}
-            >
-              Retry
-            </button>
+            <button onClick={() => window.location.reload()}>Retry</button>
           </div>
         )}
 

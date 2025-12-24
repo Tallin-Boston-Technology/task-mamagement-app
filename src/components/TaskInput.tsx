@@ -13,7 +13,7 @@ function TaskInput({ onAddTask }: TaskInputProps): JSX.Element {
     if (newTask.trim() && !submitting) {
       setSubmitting(true);
       try {
-        await onAddTask(newTask);
+        onAddTask(newTask);
         setNewTask("");
       } finally {
         setSubmitting(false);

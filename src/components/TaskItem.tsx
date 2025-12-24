@@ -29,9 +29,19 @@ function TaskItem({
   const handleDelete = async () => {
     setDeleting(true);
     try {
-      await onDeleteTask(task.id);
+      onDeleteTask(task.id);
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleEditKeyPress = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (e.key === "Enter") {
+      onSaveEdit();
+    } else if (e.key === "Escape") {
+      onCancelEdit();
     }
   };
 
@@ -51,6 +61,7 @@ function TaskItem({
             type="text"
             value={editText}
             onChange={(e) => onEditTextChange(e.target.value)}
+            onKeyDown={handleEditKeyPress}
             className="edit-input"
             autoFocus
           />
